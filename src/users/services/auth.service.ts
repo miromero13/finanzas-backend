@@ -1,26 +1,32 @@
-import { Injectable } from '@nestjs/common';
-import { CreateAuthDto } from '../dto/create-auth.dto';
-import { UpdateAuthDto } from '../dto/update-auth.dto';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { AuthDto } from '../dto/create-auth.dto';
+import { UsersService } from './users.service';
+import * as bcrypt from 'bcrypt';
+import { handlerError } from 'src/common/utils/handler-error.utils';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-  create(createAuthDto: CreateAuthDto) {
-    return 'This action adds a new auth';
-  }
+  private readonly logger = new Logger('AuthService');
+  constructor(
+    private readonly userService: UsersService,
+    private readonly jwtService: JwtService,
+  ) {}
 
-  findAll() {
-    return `This action returns all auth`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
-  }
-
-  update(id: number, updateAuthDto: UpdateAuthDto) {
-    return `This action updates a #${id} auth`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
+  public async login(authDto: AuthDto) {
+    try {
+      const { email, password } = authDto;
+      const user = await this.userService.findByEmail(email);
+      if (!user) throw new NotFoundException('Correo incorrecto');
+      const validPassword = await bcrypt.compare(password, user.password);
+      if (!validPassword) throw new NotFoundException('Contraseña incorrecta');
+      const payload = { id: user.id, name: user.name };
+      const token = this.jwtService.sign(payload);
+      const data = { user, token };
+      return data;
+    } catch (error) {
+      handlerError(error, this.logger);
+      throw error;
+    }
   }
 }

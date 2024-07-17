@@ -63,6 +63,7 @@ export class BalanceService {
       const assetCreated = await this.createAssets(assets);
       const liabilityCreated =
         await this.createLiabilitiesEquity(liabilitiesEquity);
+        console.log(rest)
       const balance = this.balanceRepository.create({
         ...rest,
         user: { id: user.id },

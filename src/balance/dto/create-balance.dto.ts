@@ -7,8 +7,6 @@ import { ApiProperty } from '@nestjs/swagger';
 export class CreateBalanceDto {
   @ApiProperty({ example: 2024, description: 'Año del balance' })
   @IsNumber()
-  @Min(2020)
-  @Max(new Date().getFullYear())
   year: number;
 
   @ApiProperty({ example: 12, description: 'Mes del balance' })

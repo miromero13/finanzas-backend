@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Get, Query } from '@nestjs/common';
 import { AuthService } from '../services/auth.service';
 import { AuthDto } from '../dto/create-auth.dto';
 import { ResponseMessage } from 'src/common/interfaces/reponse-message.interface';
@@ -13,6 +13,14 @@ export class AuthController {
     return {
       data: await this.authService.login(createAuthDto),
       statusCode: 200,
+    };
+  }
+
+  @Get('')
+  public async checkToken(@Query('token') token: string): Promise<ResponseMessage> {
+    return {
+      statusCode: 200,
+      data: await this.authService.checkToken(token)
     };
   }
 }

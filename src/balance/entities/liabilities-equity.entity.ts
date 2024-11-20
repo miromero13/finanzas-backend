@@ -1,6 +1,6 @@
 import { Column, Entity, OneToMany, OneToOne } from 'typeorm';
 import { BaseEntity } from 'src/common/entities/base.entity';
-import { ILiabilitiesEquity } from '../interface/liabilities-Equity.interface';
+import { ILiabilitiesEquity } from '../interface/liabilities-equity.interface';
 import { CurrentLiabilitiesEntity } from './current-liabilities.entity';
 import { FixedLiabilitiesEntity } from './fixed-liabilities.entity';
 import { EquityEntity } from './equity.entity';

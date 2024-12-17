@@ -394,6 +394,7 @@ export class BalanceService {
   }
 
   public async assestAnalysis(assets: AssetsEntity) {
+    // Extraemos los datos relevantes de los activos y devolvemos un objeto con los porcentajes calculados
     try {
       const {
         totalCurrentAssets,
@@ -469,7 +470,7 @@ export class BalanceService {
     const currentRatio =
       assets.totalCurrentAssets / liabilities.totalCurrentLiabilities;
 
-    // Solvencia
+    // Solvencia y endeudamiento
     const debtRatio = liabilities.totalLiabilitiesEquity / assets.totalAssets;
     const equityRatio = liabilities.totalEquity / assets.totalAssets;
 
